@@ -9,6 +9,7 @@ const URL = "https://fathomless-tundra-67025.herokuapp.com/";
 export const socket = io(URL);
 
 const VideoState = ({ children }) => {
+  const [cintaku, setCintaku] = useState("");
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [stream, setStream] = useState();
@@ -35,10 +36,13 @@ const VideoState = ({ children }) => {
         setStream(currentStream);
         myVideo.current.srcObject = currentStream;
       });
+    // this is for save name user
     if (localStorage.getItem("name")) {
       setName(localStorage.getItem("name"));
     }
+
     socket.on("me", (id) => setMe(id));
+
     socket.on("endCall", () => {
       window.location.reload();
     });
@@ -70,11 +74,8 @@ const VideoState = ({ children }) => {
         setMsgRcv({});
       }, 2000);
     });
+    socket.on("saya", (cb) => setCintaku(cb));
   }, []);
-
-  // useEffect(() => {
-  //   console.log(chat);
-  // }, [chat]);
 
   const answerCall = () => {
     setCallAccepted(true);
@@ -99,7 +100,7 @@ const VideoState = ({ children }) => {
 
     connectionRef.current = peer;
   };
-
+  // functions callUser
   const callUser = (id) => {
     const peer = new Peer({ initiator: true, trickle: false, stream });
     setOtherUser(id);
@@ -139,6 +140,7 @@ const VideoState = ({ children }) => {
       return !currentStatus;
     });
   };
+
   const updateMic = () => {
     setMyMicStatus((currentStatus) => {
       socket.emit("updateMyMedia", {
@@ -170,7 +172,7 @@ const VideoState = ({ children }) => {
     msg.sender = name;
     setChat([...chat, msg]);
   };
-
+  console.log(cintaku);
   return (
     <VideoContext.Provider
       value={{

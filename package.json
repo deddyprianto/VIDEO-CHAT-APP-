@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "cd client && npm start",
-    "dev": "concurrently \"node index.js\" \"npm run client\""
+    "client": "cd client && yarn start",
+    "dev": "concurrently \"node index.js\" \"yarn client\""
   },
   "keywords": [],
   "author": "",
